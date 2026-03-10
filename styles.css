@@ -6,7 +6,7 @@
     --accent-purple: #bd00ff;
 }
 
-html{
+html {
     scroll-behavior: smooth;
 }
 
@@ -117,10 +117,10 @@ nav a:hover {
 }
 
 .card img {
-    width: auto;
-    height: auto;
-    max-height: 250px;
-    object-fit: cover;
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+    background-color: #0d0d12;
     border-radius: 4px;
     margin-bottom: 1rem;
 }
@@ -171,6 +171,108 @@ nav a:hover {
 .tarjetas p {
     color: #a0a0a0;
     line-height: 1.5;
+}
+
+.comentarios-section {
+    padding: 4rem 1rem;
+    background-color: var(--bg-dark);
+    border-top: 1px solid #222;
+}
+
+.comentarios-section h2 {
+    text-align: center;
+    color: var(--accent-cyan);
+    margin-bottom: 2rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.formulario-container {
+    max-width: 600px;
+    margin: 0 auto 3rem auto;
+    background-color: var(--bg-card);
+    padding: 2rem;
+    border-radius: 8px;
+    border: 1px solid var(--accent-purple);
+    box-shadow: 0 5px 20px rgba(189, 0, 255, 0.1);
+}
+
+.neon-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.input-group {
+    display: flex;
+    gap: 1rem;
+}
+
+.input-group input {
+    flex: 1;
+}
+
+.neon-form input, .neon-form textarea {
+    background-color: #0d0d12;
+    border: 1px solid #2a2a35;
+    color: var(--text-light);
+    padding: 1rem;
+    border-radius: 4px;
+    font-family: "Onest", sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.neon-form input:focus, .neon-form textarea:focus {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 8px rgba(0, 243, 255, 0.2);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.notas-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.nota-card {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.nota-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.2rem;
+    color: var(--accent-cyan);
+}
+
+.user-tag {
+    color: var(--accent-purple);
+    font-size: 0.9rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.fecha-nota {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem !important;
+    color: #888 !important;
+    margin-bottom: 1rem !important;
+    border-bottom: 1px dashed #333;
+    padding-bottom: 0.5rem;
+}
+
+.contenido-nota {
+    flex-grow: 1;
+    color: #ccc !important;
 }
 
 footer {

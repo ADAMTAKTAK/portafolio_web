@@ -1,3 +1,7 @@
+<?php
+    include "model/conn.php";
+    include "controller/Notes_controller.php";
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -17,16 +21,17 @@
             <a href="#inicio">Inicio</a>
             <a href="#proyectos">Proyectos</a>
             <a href="#sobre-mi">Sobre Mí</a>
+            <a href="#comentarios" style="color: var(--accent-purple);">Notas</a>
         </nav>
     </header>
 
     <section id="inicio" class="banner">
         <h1>Hola, soy Adam Taktak 👾</h1>
         <p>Estudiante y desarrollador de software. Entusiasta del código, la lógica y los videojuegos.</p>
-        <a id="proyectos" href="https://github.com/ADAMTAKTAK" target="_blank" rel="noopener noreferrer" class="btn-terminal">RUN ./ver_proyectos.sh</a>
+        <a href="https://github.com/ADAMTAKTAK" target="_blank" rel="noopener noreferrer" class="btn-terminal">RUN ./ver_proyectos.sh</a>
     </section>
 
-    <section class="gallery">
+    <section id="proyectos" class="gallery">
         <div class="card">
             <img src="assets/app_portafolio.jpg" alt="App Portafolio en Flutter">
             <h3>App Portafolio</h3>
@@ -62,13 +67,51 @@
         </div>
     </section>
 
-<footer>
+    <section id="comentarios" class="comentarios-section">
+        <h2>>_ Registro de Notas y Comentarios</h2>
+        
+        <div class="formulario-container">
+            <form action="index.php#comentarios" method="POST" class="neon-form">
+                <div class="input-group">
+                    <input type="text" name="nombreyapellido" placeholder="Nombre y Apellido" required>
+                    <input type="text" name="usuario" placeholder="Usuario (Opcional)">
+                </div>
+                <input type="email" name="email" placeholder="Correo Electrónico" required>
+                <textarea name="nota" placeholder="Deja tu nota en la terminal..." rows="4" required></textarea>
+                
+                <div class="form-actions">
+                    <input type="submit" name="btn_enviar_nota" class="btn-terminal" value="Enviar Nota">
+                </div>
+            </form>
+        </div>
+
+        <div class="notas-grid">
+            <?php
+            $sql_notas = $conn->query("SELECT * FROM notas ORDER BY id DESC");
+
+            if ($sql_notas->num_rows > 0) {
+                while($fila = $sql_notas->fetch_assoc()) {
+                    $usr = !empty($fila['usuario']) ? "@" . htmlspecialchars($fila['usuario']) : "";
+                    echo "<div class='card nota-card'>";
+                    echo "<h3>" . htmlspecialchars($fila['nombreyapellido']) . " <span class='user-tag'>$usr</span></h3>";
+                    echo "<p class='fecha-nota'>>_ Log: " . $fila['fechanota'] . "</p>";
+                    echo "<p class='contenido-nota'>" . htmlspecialchars($fila['nota']) . "</p>";
+                    echo "</div>";
+                }
+            } else {
+                echo "<p style='text-align:center; color:#888; width:100%;'>>_ Sistema vacío. Escribe la primera nota.</p>";
+            }
+            ?>
+        </div>
+    </section>
+
+    <footer>
         <div class="footer-content">
             <div class="social-links">
                 <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ataktak.6013@unimar.edu.ve" target="_blank" rel="noopener noreferrer">>_ Contactar por Email</a>
             </div>
             <p>&copy; 2026 Adam Taktak. Todos los derechos reservados.</p>
-            <p class="footer-note">>_ Desarrollado con HTML y CSS puro</p>
+            <p class="footer-note">>_ Desarrollado con PHP, MySQL, HTML y CSS</p>
         </div>
     </footer>
 </body>
