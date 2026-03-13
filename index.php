@@ -70,17 +70,48 @@
     <section id="comentarios" class="comentarios-section">
         <h2>>_ Registro de Notas y Comentarios</h2>
         
+        <?php
+        $id_editar = "";
+        $nombre_editar = "";
+        $usuario_editar = "";
+        $email_editar = "";
+        $nota_editar = "";
+        $modo_edicion = false;
+
+        if (isset($_GET['editar'])) {
+            $id_editar = $_GET['editar'];
+            $sql_editar = $conn->query("SELECT * FROM notas WHERE id=$id_editar");
+            if ($sql_editar->num_rows > 0) {
+                $fila_editar = $sql_editar->fetch_assoc();
+                $nombre_editar = $fila_editar['nombreyapellido'];
+                $usuario_editar = $fila_editar['usuario'];
+                $email_editar = $fila_editar['email'];
+                $nota_editar = $fila_editar['nota'];
+                $modo_edicion = true;
+            }
+        }
+        ?>
+
         <div class="formulario-container">
             <form action="index.php#comentarios" method="POST" class="neon-form">
+                <?php if($modo_edicion) { ?>
+                    <input type="hidden" name="id" value="<?php echo $id_editar; ?>">
+                <?php } ?>
+
                 <div class="input-group">
-                    <input type="text" name="nombreyapellido" placeholder="Nombre y Apellido" required>
-                    <input type="text" name="usuario" placeholder="Usuario (Opcional)">
+                    <input type="text" name="nombreyapellido" placeholder="Nombre y Apellido" value="<?php echo htmlspecialchars($nombre_editar); ?>" required>
+                    <input type="text" name="usuario" placeholder="Usuario (Opcional)" value="<?php echo htmlspecialchars($usuario_editar); ?>">
                 </div>
-                <input type="email" name="email" placeholder="Correo Electrónico" required>
-                <textarea name="nota" placeholder="Deja tu nota en la terminal..." rows="4" required></textarea>
+                <input type="email" name="email" placeholder="Correo Electrónico" value="<?php echo htmlspecialchars($email_editar); ?>" required>
+                <textarea name="nota" placeholder="Deja tu nota en la terminal..." rows="4" required><?php echo htmlspecialchars($nota_editar); ?></textarea>
                 
                 <div class="form-actions">
-                    <input type="submit" name="btn_enviar_nota" class="btn-terminal" value="Enviar Nota">
+                    <?php if($modo_edicion) { ?>
+                        <input type="submit" name="btn_actualizar_nota" class="btn-terminal" value="Actualizar" style="border-color: var(--accent-purple); color: var(--accent-purple);">
+                        <a href="index.php#comentarios" class="btn-terminal" style="border-color: #ff3366; color: #ff3366; margin-left: 1rem;">Cancelar</a>
+                    <?php } else { ?>
+                        <input type="submit" name="btn_enviar_nota" class="btn-terminal" value="Enviar Nota">
+                    <?php } ?>
                 </div>
             </form>
         </div>
@@ -96,6 +127,11 @@
                     echo "<h3>" . htmlspecialchars($fila['nombreyapellido']) . " <span class='user-tag'>$usr</span></h3>";
                     echo "<p class='fecha-nota'>>_ Log: " . $fila['fechanota'] . "</p>";
                     echo "<p class='contenido-nota'>" . htmlspecialchars($fila['nota']) . "</p>";
+                    
+                    echo "<div style='margin-top: 1rem; display: flex; gap: 1rem;'>";
+                    echo "<a href='index.php?editar=" . $fila['id'] . "#comentarios' style='color: var(--accent-cyan); text-decoration: none; border: 1px solid var(--accent-cyan); padding: 0.3rem 0.8rem; border-radius: 3px; font-family: \"JetBrains Mono\", monospace; font-size: 0.85rem; transition: 0.3s;'>Editar</a>";
+                    echo "<a href='controller/delete_note_controller.php?id=" . $fila['id'] . "' style='color: #ff3366; text-decoration: none; border: 1px solid #ff3366; padding: 0.3rem 0.8rem; border-radius: 3px; font-family: \"JetBrains Mono\", monospace; font-size: 0.85rem; transition: 0.3s;' onclick='return confirm(\"¿Seguro que deseas borrar permanentemente esta nota?\")'>Borrar</a>";
+                    echo "</div>";
                     echo "</div>";
                 }
             } else {
